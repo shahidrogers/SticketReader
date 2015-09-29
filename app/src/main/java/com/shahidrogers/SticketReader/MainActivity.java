@@ -19,6 +19,8 @@ import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -98,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
                         // The query was successful.
                         Date endTime = object.getDate("parkEndDateAndTime");
                         Date currentTime = new Date();
+                        //format string output of date object
+                        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                        DateFormat df2 = new SimpleDateFormat("HH:mm:ss");
                         Log.d("Result:", endTime.toString());
                         Log.d("Result:", currentTime.toString());
                         if (currentTime.after(endTime)) {
@@ -105,14 +110,16 @@ public class MainActivity extends AppCompatActivity {
                             //Log.d("Result:", "True");
                             new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
                                     .setTitleText("EXPIRED TICKET")
-                                    .setContentText("Ticket of " + result + " has expired at " + endTime.toString())
+                                    .setContentText("Ticket of " + result + "\nHAS EXPIRED AT\n\n"
+                                            + df.format(endTime) + "\n" + df2.format(endTime) + "\n")
                                     .show();
                         } else {
                             //put your green tick
                             //Log.d("Result:", "False");
                             new SweetAlertDialog(MainActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("VALIDATED")
-                                    .setContentText("Ticket of " + result + " is not expired (Expires " + endTime.toString() + ")")
+                                    .setContentText("Ticket of " + result + "\nIS VALID\n\nEXPIRES AT\n"
+                                            + df.format(endTime) + " " + df2.format(endTime) + "\n")
                                     .show();
                         }
 
